@@ -8,10 +8,12 @@ Forked from vagrant-gatling-rsync.
 ## Getting started
 
 To get started, you need to have Vagrant 1.5.1 installed on your Linux, Mac, or
-Windows host machine. To install the plugin, use the following command.
+Windows host machine. To install the plugin, use the following commands.
 
 ```bash
-vagrant plugin install vagrant-rsync-blitz
+curl -L --output "$HOME/vagrant-rsync-blitz-2.0.0.gem" https://github.com/mitchellnemitz/vagrant-rsync-blitz/releases/download/2.0.0/vagrant-rsync-blitz-2.0.0.gem
+
+vagrant plugin install "$HOME/vagrant-rsync-blitz-2.0.0.gem"
 ```
 
 ## Working with this plugin
@@ -80,11 +82,6 @@ If you specify a latency of two seconds, this plugin will not fire a
 `vagrant rsync` until two contiguous seconds without file events have passed.
 This will delay rsyncs from happening if many writes are happening on the host
 (during a `make` or a `git clone`, for example) until the activity has leveled off.
-
-## Building
-
-```
-```
 
 ## Authors
 
