@@ -1,13 +1,10 @@
-source 'https://rubygems.org'
-
-# Specify your gem's dependencies in vagrant-gatling-rsync.gemspec
-gemspec
+source "https://rubygems.org"
 
 group :development do
-  gem "vagrant", :git => "https://github.com/mitchellh/vagrant.git", :tag => 'v2.2.9'
+  gem "vagrant", git: "https://github.com/hashicorp/vagrant.git"
+  gem "rubocop", require: false
 end
 
 group :plugins do
-  gemspec
+  gem "vagrant-rsync-blitz", path: "."
 end
-

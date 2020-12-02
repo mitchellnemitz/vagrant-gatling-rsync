@@ -1,13 +1,13 @@
 require "vagrant"
 
 module VagrantPlugins
-  module GatlingRsync
+  module RsyncBlitz
     class StartupRsync
       include Vagrant::Action::Builtin::MixinSyncedFolders
 
       def initialize(app, env)
         @app = app
-        @gatling_startup_registered = false
+        @blitz_startup_registered = false
         @rsync_folder_count = 0
       end
 
@@ -18,9 +18,9 @@ module VagrantPlugins
         @app.call(env)
 
         # Ensure only one at_exit block is registered.
-        return unless @gatling_startup_registered == false
+        return unless @blitz_startup_registered == false
 
-        return unless env[:machine].config.gatling.rsync_on_startup == true
+        return unless env[:machine].config.blitz.autostart == true
 
         at_exit do
           unless $!.is_a?(SystemExit)
@@ -36,12 +36,11 @@ module VagrantPlugins
 
           # Don't run if there are no rsynced folders.
           unless @rsync_folder_count == 0 then
-            env[:ui].info I18n.t("vagrant_gatling_rsync.startup_sync")
-            env[:machine].env.cli("gatling-rsync-auto")
+            env[:machine].env.cli("rsync-blitz")
           end
         end
 
-        @gatling_startup_registered = true
+        @blitz_startup_registered = true
       end
     end
   end

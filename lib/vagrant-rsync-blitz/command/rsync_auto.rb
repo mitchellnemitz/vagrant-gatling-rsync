@@ -4,8 +4,8 @@ require "optparse"
 require "vagrant"
 
 module VagrantPlugins
-  module GatlingRsync
-    class GatlingRsyncAuto < Vagrant.plugin(2, :command)
+  module RsyncBlitz
+    class RsyncBlitzAuto < Vagrant.plugin(2, :command)
       # This is a sanity check to make sure no one is attempting to install
       # this into an early Vagrant version.
       if Vagrant::VERSION < "1.5.1"
@@ -15,14 +15,14 @@ module VagrantPlugins
       include Vagrant::Action::Builtin::MixinSyncedFolders
 
       def self.synopsis
-        "syncs rsync synced folders when folders change"
+        "syncs rsync synced folders automatically when files change"
       end
 
       def execute
-        @logger = Log4r::Logger.new("vagrant::commands::gatling-rsync-auto")
+        @logger = Log4r::Logger.new("vagrant::commands::rsync-blitz")
 
         opts = OptionParser.new do |o|
-          o.banner = "Usage: vagrant gatling-rsync-auto [vm-name]"
+          o.banner = "Usage: vagrant rsync-blitz [vm-name]"
           o.separator ""
         end
 
@@ -36,7 +36,7 @@ module VagrantPlugins
         paths = {}
         ignores = []
         with_target_vms(argv) do |machine|
-          latency = machine.config.gatling.latency
+          latency = machine.config.blitz.latency
 
           folders = synced_folders(machine)[:rsync]
           next if !folders || folders.empty?
@@ -153,8 +153,8 @@ module VagrantPlugins
         VagrantPlugins::SyncedFolderRSync::RsyncHelper.rsync_single(machine, ssh_info, opts)
         end_time = Time.new
         machine.ui.info(I18n.t(
-          "vagrant_gatling_rsync.gatling_ran",
-          date: end_time.strftime(machine.config.gatling.time_format),
+          "vagrant_rsync_blitz.blitz_ran",
+          date: end_time.strftime(machine.config.blitz.time_format),
           milliseconds: (end_time - start_time) * 1000))
       end
     end

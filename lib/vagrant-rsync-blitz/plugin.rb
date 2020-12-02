@@ -1,20 +1,20 @@
 begin
   require "vagrant"
 rescue LoadError
-  raise "The Vagrant gatling rsync plugin must be run within Vagrant."
+  raise "The vagrant-rsync-blitz plugin must be run within Vagrant."
 end
 
 module VagrantPlugins
-  module GatlingRsync
+  module RsyncBlitz
     class Plugin < Vagrant.plugin(2)
-      name "Gatling Rsync"
+      name "Rsync Blitz"
       description <<-DESC
       Rsync large project directories to your Vagrant VM without using many resources on the host.
       DESC
 
       # This initializes the internationalization strings.
       def self.setup_i18n
-        I18n.load_path << File.expand_path("locales/en.yml", GatlingRsync.source_root)
+        I18n.load_path << File.expand_path("locales/en.yml", RsyncBlitz.source_root)
         I18n.reload!
       end
 
@@ -24,14 +24,14 @@ module VagrantPlugins
         hook.after Vagrant::Action::Builtin::SyncedFolders, StartupRsync
       end
 
-      command "gatling-rsync-auto" do
+      command "rsync-blitz" do
         setup_i18n
 
         require_relative "command/rsync_auto"
-        GatlingRsyncAuto
+        RsyncBlitzAuto
       end
 
-      config "gatling" do
+      config "blitz" do
         require_relative "config"
         Config
       end

@@ -1,7 +1,9 @@
-# vagrant-gatling-rsync
+# vagrant-rsync-blitz
 
 An rsync watcher for Vagrant 1.5.1+ that uses fewer host resources at the
 potential cost of more rsync actions.
+
+Forked from vagrant-gatling-rsync.
 
 ## Getting started
 
@@ -9,13 +11,13 @@ To get started, you need to have Vagrant 1.5.1 installed on your Linux, Mac, or
 Windows host machine. To install the plugin, use the following command.
 
 ```bash
-vagrant plugin install vagrant-gatling-rsync
+vagrant plugin install vagrant-rsync-blitz
 ```
 
 ## Working with this plugin
 
 Add the following information to the Vagrantfile to set the coalescing
-threshold in seconds. If you do not set it, it will default to 1.5.
+threshold in seconds. If you do not set it, it will default to 2.
 
 You may also specify what
 [Time.strftime](http://www.ruby-doc.org/core-2.0.0/Time.html#method-i-strftime)
@@ -34,14 +36,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.synced_folder "../files", "/opt/vagrant/rsynced_folder", type: "rsync",
     rsync__exclude: [".git/", ".idea/"]
 
-  # Configure the window for gatling to coalesce writes.
-  if Vagrant.has_plugin?("vagrant-gatling-rsync")
-    config.gatling.latency = 2.5
-    config.gatling.time_format = "%H:%M:%S"
+  # Configure the window for blitz to coalesce writes
+  if Vagrant.has_plugin?("vagrant-rsync-blitz")
+    config.blitz.latency = 3
+    config.blitz.time_format = "%H:%M:%S"
   end
 
-  # Automatically sync when machines with rsync folders come up.
-  config.gatling.rsync_on_startup = true
+  # Automatically sync when machines with rsync folders come up
+  config.blitz.autostart = true
 end
 ```
 
@@ -49,25 +51,16 @@ With the Vagrantfile configured in this fashion, you can run the following
 command to sync files.
 
 ```bash
-vagrant gatling-rsync-auto
+vagrant rsync-blitz
 ```
-
-As of version 0.9.0, vagrant-gatling-rsync will automatically start the sync
-engine on `vagrant up` or `vagrant reload` when the machines that you bring up
-have one or more rsync folders defined.  You can disable this behavior by
-setting `config.gatling.rsync_on_startup` to false.
-
-## Why "gatling"?
-
-The gatling gun was the first gun capable of firing continuously.
 
 ## This plugin
 
-The built-in rsync-auto plugin sometimes uses a lot of CPU and disk I/O when
+The built-in `rsync-auto` plugin sometimes uses a lot of CPU and disk I/O when
 it starts up on very large rsynced directories. This plugin is designed to
 work well with such large rsynced folders.
 
-The rsync-auto command that ships with Vagrant 1.5 uses the listen gem. The
+The `rsync-auto` command that ships with Vagrant 1.5+ uses the listen gem. The
 Listen gem is quite thorough - it uses Celluloid to spin up an actor system
 and it checks file contents on OS X to ensure that running "touch" on a file
 (to do a write but not update its content) will not fire the rsync command.
@@ -81,12 +74,17 @@ APIs, which allows for higher performance.
 
 ## Event coalescing
 
-This plugin also coalesces events for you. The default latency is 1.5 seconds.
-It is configurable through the `config.gatling.latency` parameter.
+This plugin coalesces events for you. The default latency is 2 seconds.
+It is configurable through the `config.blitz.latency` parameter.
 If you specify a latency of two seconds, this plugin will not fire a
 `vagrant rsync` until two contiguous seconds without file events have passed.
 This will delay rsyncs from happening if many writes are happening on the host
 (during a `make` or a `git clone`, for example) until the activity has leveled off.
+
+## Building
+
+```
+```
 
 ## Authors
 
@@ -97,3 +95,5 @@ Doug Marcey (@dougmarcey) provided considerable guidance in the implementation
 of the coalescing functionality and wrote the initial sketch of the Linux and
 Windows adapters.
 
+Mitchell Nemitz (@mitchellnemitz) hard forked the plugin and added quality of
+life features and sane default configuration.

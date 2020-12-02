@@ -19,16 +19,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     override.vm.box = "smerrill/centos-7"
   end
 
-  # When using gatling rsync in your projects, you should wrap these configs in
-  # an 'if Vagrant.has_plugin?("vagrant-gatling-rsync")' test.
+  # When using rsync-blitz in your projects, you should wrap these configs in
+  # an 'if Vagrant.has_plugin?("vagrant-rsync-blitz")' test.
 
-  # Configure the window for gatling to coalesce writes.
-  config.gatling.latency = 0.4
-  config.gatling.time_format = "%H:%M:%S"
+  # Configure the window for blitz to coalesce writes.
+  config.blitz.latency = 1.0
+  config.blitz.time_format = "%H:%M:%S"
 
-  # Gatling rsync will run `vagrant gatling-rsync-auto` after the machines in
-  # your Vagrant environment start unles you set this to false.
-  config.gatling.rsync_on_startup = true
+  # Blitz will run `vagrant rsync-blitz` after the machines in
+  # your Vagrant environment start if you set this to true.
+  config.blitz.autostart = true
 
   # Add a multi-box setup.
   config.vm.define "rsync", primary: true do |m|

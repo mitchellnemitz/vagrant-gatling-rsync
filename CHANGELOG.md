@@ -1,4 +1,23 @@
-## 1.0 (June 02, 2020)
+# Blitz
+
+## 2.0.0 (Dec 01, 2020)
+
+Hard fork and rename to `vagrant-rsync-blitz`
+
+- Rename configuration properties
+- Make default values less intrusive
+
+## 1.0.1 (Dec 01, 2020)
+
+This release adds compatibility with Vagrant 2.2.10+.
+
+FEATURES:
+
+- Add compatibility with Vagrant 2.2.10+
+
+# Gatling
+
+## 1.0.0 (June 02, 2020)
 
 This release adds compatibility with Vagrant 2.2.5+.
 
@@ -78,6 +97,5 @@ FEATURES:
 
 ## Backlog
 
-- Test and release the Windows adapter.
 - Allow configuring and running the rsync daemon to avoid SSH overhead.
 - Get latency validation working.
