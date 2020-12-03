@@ -11,9 +11,7 @@ To get started, you need to have Vagrant 1.5.1 installed on your Linux, Mac, or
 Windows host machine. To install the plugin, use the following commands.
 
 ```bash
-curl -L --output "$HOME/vagrant-rsync-blitz-2.0.0.gem" https://github.com/mitchellnemitz/vagrant-rsync-blitz/releases/download/2.0.0/vagrant-rsync-blitz-2.0.0.gem
-
-vagrant plugin install "$HOME/vagrant-rsync-blitz-2.0.0.gem"
+vagrant plugin install vagrant-rsync-blitz
 ```
 
 ## Working with this plugin
